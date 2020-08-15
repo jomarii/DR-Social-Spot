@@ -103,9 +103,11 @@ class PostController extends Controller
 
     public function getNewsfeedPosts(){
         $userId = Auth::user()->id;
-        $friends = Auth::user()->friends()->get();
-        foreach($friends as $friend){
-            dump($friend->first_name);
+        $friends = Auth::user()->users()->get();
+        $friendsTwo = Auth::user()->friendsPivotUserTwo()->get();
+        $merge = $friends->merge($friendsTwo);
+        foreach($merge as $mer){
+            dump($mer->first_name);
         }
         exit;
         $posts = Post::with('friends')->toSql();

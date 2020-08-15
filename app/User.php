@@ -55,7 +55,7 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'friendships', 'user_id_1', 'user_id_2');
     }
 
-    public function likes(){
-        return $this->belongsToMany(Post::class, 'like_posts');
+    public function friendsPivotUserTwo(){
+        return $this->belongsToMany(User::class, 'friendships', 'user_id_2', 'user_id_1');
     }
 }
