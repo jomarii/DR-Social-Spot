@@ -13,10 +13,20 @@ class Post extends Model
     }
 
     public function comments(){
-    	return $this->hasMany(Comment::class);
+    	return $this->hasMany(Comment::class)
+                    ->whereNull('parent_id')
+                    ->get();
     }
 
     public function likes(){
     	return $this->belongsToMany(User::class, 'like_posts');
+    }
+
+    public function likesCount(){
+        return $this->likes()->count();
+    }
+
+    public function likers(){
+        return $this->likes()->withPivot('post_id')->get();
     }
 }

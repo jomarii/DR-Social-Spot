@@ -17,10 +17,23 @@ Route::group(['namespace' => 'api'], function(){
 	Route::post('/register', 'AuthenticationController@register');
 	Route::post('/login', 'AuthenticationController@authenticate');
 
+	//authenticated routes
 	Route::group(['middleware' => 'auth:sanctum'], function(){
+
+		//Post routes
+		Route::get('/posts/{user_id}', 'PostController@getPostsByUser');
 		Route::group(['prefix' => 'post'], function(){
 			Route::post('/create', 'PostController@create');
 			Route::put('/like/{post_id}', 'PostController@likePost');
+			Route::post('/comment/{post_id}', 'PostController@comment');
+			Route::post('/comment-reply/{post_id}/{comment_id}', 'PostController@commentReply');
 		});
+
+		//Profile routes
+		Route::group(['prefix' => 'profile'], function(){
+			Route::patch('/update', 'ProfileController@update');
+		});
+
+		Route::get('/newsfeed', 'PostController@getNewsfeedPosts');
 	});
 });

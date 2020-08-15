@@ -3,10 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\Comment as CommentResource;
-use App\Http\Resources\Profile as ProfileResource;
+use App\Http\Resources\CommentReply as CommentReplyResource;
 
-class Post extends JsonResource
+class Comment extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,14 +16,12 @@ class Post extends JsonResource
     public function toArray($request)
     {
         return [
-            'post_id' => $this->id,
+            'comment_id' => $this->id,
             'user_id' => $this->user_id,
             'user' => $this->user->getFullNameAttribute(),
-            'post' => $this->post,
-            // 'likes' => $this->likesCount(),
-            // 'likers' => ProfileResource::collection($this->likers()),
+            'comment' => $this->comment,
             'created_at' => $this->created_at->format('M d, Y h:ia'),
-            // 'comments' => CommentResource::collection($this->comments())
+            'replies' => CommentReplyResource::collection($this->replies())
         ];
     }
 }
