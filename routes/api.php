@@ -13,7 +13,14 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['namespace' => 'api'], function(){
+	Route::post('/register', 'AuthenticationController@register');
+	Route::post('/login', 'AuthenticationController@authenticate');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+	Route::group(['middleware' => 'auth:sanctum'], function(){
+		Route::group(['prefix' => 'post'], function(){
+			Route::post('/create', 'PostController@create');
+			Route::put('/like/{post_id}', 'PostController@likePost');
+		});
+	});
 });

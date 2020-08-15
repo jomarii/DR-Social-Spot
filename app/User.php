@@ -11,13 +11,14 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
+    public static $userAbilities = ['post:create', 'post:like', 'post:comment', 'profile:update'];
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password',
     ];
 
     /**
@@ -37,4 +38,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
+
+    public function getFullNameAttribute(){
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function users(){
+        return $this->belongsToMany(User::class, 'friendships', 'user_id_1', 'user_id_2');
+    }
+
+    public function likes(){
+        return $this->belongsToMany(Post::class, 'like_posts');
+    }
 }
