@@ -11,7 +11,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
-    public static $userAbilities = ['post:create', 'post:like', 'post:comment', 'profile:update'];
+    public static $userAbilities = ['post:create', 'post:like', 'post:comment', 'post:list', 'profile:update'];
     /**
      * The attributes that are mass assignable.
      *

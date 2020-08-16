@@ -97,21 +97,29 @@ class PostController extends Controller
     }
 
     public function getPostsByUser($userId){
-        $posts = Post::where('user_id', $userId)->get();
-        return PostResource::collection($posts);
+        if(Auth::user()->tokenCan('post:list')){
+            $posts = Post::where('user_id', $userId)->get();
+            return PostResource::collection($posts);
+        }
+
+        abort(403, 'Unauthorized access');
     }
 
     public function getNewsfeedPosts(){
-        $friends = Auth::user()->users()->get();
-        $friendsPivotTwo = Auth::user()->friendsPivotUserTwo()->get();
-        $friendListIds = array_column($friends->merge($friendsPivotTwo)->toArray(), 'id');
-        
-        //include own id on friendlistids
-        array_push($friendListIds, Auth::user()->id);
+        if(Auth::user()->tokenCan('post:list')){
+            $friends = Auth::user()->users()->get();
+            $friendsPivotTwo = Auth::user()->friendsPivotUserTwo()->get();
+            $friendListIds = array_column($friends->merge($friendsPivotTwo)->toArray(), 'id');
+            
+            //include own id on friendlistids
+            array_push($friendListIds, Auth::user()->id);
 
-        $posts = Post::whereIn('user_id', $friendListIds)
-                    ->orderBy('created_at', 'desc')
-                    ->get();
-        return PostResource::collection($posts);
+            $posts = Post::whereIn('user_id', $friendListIds)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+            return PostResource::collection($posts);
+        }
+
+        abort(403, 'Unauthorized access');
     }
 }

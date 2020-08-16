@@ -34,6 +34,10 @@ Route::group(['namespace' => 'api'], function(){
 			Route::patch('/update', 'ProfileController@update');
 		});
 
+		//newsfeed
 		Route::get('/newsfeed', 'PostController@getNewsfeedPosts');
+
+		//logout
+		Route::put('/logout', 'AuthenticationController@logout');
 	});
 });
