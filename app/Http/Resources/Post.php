@@ -21,10 +21,10 @@ class Post extends JsonResource
             'user_id' => $this->user_id,
             'user' => $this->user->getFullNameAttribute(),
             'post' => $this->post,
-            // 'likes' => $this->likesCount(),
-            // 'likers' => ProfileResource::collection($this->likers()),
+            'likes' => $this->likesCount(),
+            'likers' => ProfileResource::collection($this->likers()),
             'created_at' => $this->created_at->format('M d, Y h:ia'),
-            // 'comments' => CommentResource::collection($this->comments())
+            'comments' => CommentResource::collection($this->comments())
         ];
     }
 }

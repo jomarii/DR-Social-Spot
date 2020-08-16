@@ -102,16 +102,16 @@ class PostController extends Controller
     }
 
     public function getNewsfeedPosts(){
-        $userId = Auth::user()->id;
         $friends = Auth::user()->users()->get();
-        $friendsTwo = Auth::user()->friendsPivotUserTwo()->get();
-        $merge = $friends->merge($friendsTwo);
-        foreach($merge as $mer){
-            dump($mer->first_name);
-        }
-        exit;
-        $posts = Post::with('friends')->toSql();
-        dd($posts);
+        $friendsPivotTwo = Auth::user()->friendsPivotUserTwo()->get();
+        $friendListIds = array_column($friends->merge($friendsPivotTwo)->toArray(), 'id');
+        
+        //include own id on friendlistids
+        array_push($friendListIds, Auth::user()->id);
+
+        $posts = Post::whereIn('user_id', $friendListIds)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
         return PostResource::collection($posts);
     }
 }
