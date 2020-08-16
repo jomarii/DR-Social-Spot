@@ -1,0 +1,44 @@
+<template>
+	<v-row>
+		<v-col cols="12">
+			<v-row justify="center">
+				<v-card width="500px">
+			        <v-card-title class="headline">Login</v-card-title>
+
+			        <v-card-text>
+			        	<v-form>
+			        		<v-text-field v-model="formData.email" placeholder="Email" id="email" type="text"></v-text-field>
+			        		<v-text-field v-model="formData.password" placeholder="Password" id="password" type="password"></v-text-field>
+			        	</v-form>
+			        </v-card-text>
+
+			        <v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn tile color="blue" @click="login()">Login</v-btn>
+						<v-btn text to="/register">Register</v-btn>
+			        </v-card-actions>
+			    </v-card>
+			</v-row>
+		</v-col>
+	</v-row>
+</template>
+<script>
+	export default{
+		data: () => ({
+			formData: {
+				email: '',
+				password: ''
+			}
+		}),
+		methods: {
+			login(){
+				axios.post('/api/v1/login', this.formData).then(response => {
+					if(response.data.token){
+						localStorage.setItem('bearerToken', response.data.token);
+						this.$router.push('/newsfeed');
+					}
+				});
+			}
+		}
+	}
+</script>

@@ -10,6 +10,11 @@ use App\Http\Resources\Profile as ProfileResource;
 
 class ProfileController extends Controller
 {
+    public function getProfile($userId){
+        $profile = User::findOrFail($userId);
+        return new ProfileResource($profile);
+    }
+
     public function update(Request $request){
     	if(Auth::user()->tokenCan('profile:update')){
     		$user = User::findOrFail(Auth::user()->id);

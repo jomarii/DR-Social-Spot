@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['namespace' => 'api'], function(){
+Route::group(['namespace' => 'api', 'prefix' => 'v1'], function(){
 	Route::post('/register', 'AuthenticationController@register');
 	Route::post('/login', 'AuthenticationController@authenticate');
 
@@ -21,9 +21,9 @@ Route::group(['namespace' => 'api'], function(){
 	Route::group(['middleware' => 'auth:sanctum'], function(){
 
 		//Post routes
-		Route::get('/posts/{user_id}', 'PostController@getPostsByUser');
 		Route::group(['prefix' => 'post'], function(){
 			Route::post('/create', 'PostController@create');
+			Route::get('/{user_id}', 'PostController@getPostsByUser');
 			Route::put('/like/{post_id}', 'PostController@likePost');
 			Route::post('/comment/{post_id}', 'PostController@comment');
 			Route::post('/comment-reply/{post_id}/{comment_id}', 'PostController@commentReply');
@@ -31,6 +31,7 @@ Route::group(['namespace' => 'api'], function(){
 
 		//Profile routes
 		Route::group(['prefix' => 'profile'], function(){
+			Route::get('/{user_id}', 'ProfileController@getProfile');
 			Route::patch('/update', 'ProfileController@update');
 		});
 
