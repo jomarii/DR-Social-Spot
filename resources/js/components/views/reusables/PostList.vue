@@ -58,7 +58,7 @@
 			post(){
 				axios.post('/api/v1/post/create', this.form).then(response => {
 					this.form.post = '';
-					this.getNewsfeed();
+					this.getPosts();
 				});
 			},
 			likePost(postId){

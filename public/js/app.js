@@ -2231,7 +2231,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/api/v1/post/create', this.form).then(function (response) {
         _this2.form.post = '';
 
-        _this2.getNewsfeed();
+        _this2.getPosts();
       });
     },
     likePost: function likePost(postId) {
