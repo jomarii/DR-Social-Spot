@@ -26,16 +26,18 @@
 					<v-flex md12 v-for="(post, index) in postList" :key="index">
 						<v-card>
 							<v-card-title>{{ post.post }}</v-card-title>
-							<v-card-subtitle>{{ post.user }} • {{ post.created_at }}</v-card-subtitle>
-							<v-card-text>Likes: {{ post.likes }}</v-card-text>
+							<v-card-subtitle>{{ post.user }} • {{ post.created_at }} • Likes: {{ post.likes }}</v-card-subtitle>
 							<v-card-actions>
 								<v-btn text @click="likePost(post.post_id)">Like</v-btn>
-								<v-btn text>Show comments</v-btn>
+								<v-btn text @click="showComments(post.comments, post.post_id)">Show comments</v-btn>
 							</v-card-actions>
 						</v-card>
 					</v-flex>
 				</v-layout>
 			</v-col>
+		</v-row>
+		<v-row>
+			<comment-dialog v-show="commentDialog" :commentsData="commentsData"></comment-dialog>
 		</v-row>
 	</v-container>
 </template>
@@ -46,7 +48,12 @@
 			postList: [],
 			form: {
 				post: ''
-			}
+			},
+			commentsData: {
+				comments: [],
+				postId: ''
+			},
+			commentDialog: false
 		}),
 		methods: {
 			getPosts(){
@@ -65,6 +72,11 @@
 				axios.put('/api/v1/post/like/'+postId).then(response => {
 					this.getPosts();
 				});
+			},
+			showComments(comments, postId){
+				this.commentsData.comments = comments;
+				this.commentsData.postId = postId;
+				this.commentDialog = true;
 			}
 		},
 		mounted(){

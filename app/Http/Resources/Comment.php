@@ -17,6 +17,7 @@ class Comment extends JsonResource
     {
         return [
             'comment_id' => $this->id,
+            'post_id' => $this->post_id,
             'user_id' => $this->user_id,
             'user' => $this->user->getFullNameAttribute(),
             'comment' => $this->comment,
