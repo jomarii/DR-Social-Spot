@@ -69,14 +69,21 @@
 				axios.post('/api/v1/post/comment/'+postId, this.commentForm).then(response => {
 					this.commentForm.comment = '';
 					this.$parent.getPosts();
+					this.getComments();
 				});
 			},
 			reply(postId, commentId){
 				axios.post('/api/v1/post/comment-reply/'+postId+'/'+commentId, {'comment': this.replyForm[commentId]}).then(response => {
 					this.replyForm[commentId] = '';
 					this.$parent.getPosts();
+					this.getComments();
 				});
 			},
+			getComments(){
+				axios.get('/api/v1/post/comments/'+this.commentsData.postId).then(response => {
+					this.commentsData.comments = response.data.data;
+				});
+			}
 		}
 	}
 </script>

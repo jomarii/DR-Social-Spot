@@ -48,6 +48,7 @@ let router = new VueRouter({
 	routes
 })
 
+//check if route requires authentication
 router.beforeEach((to, from, next) => {
 	if(to.matched.some(record => record.meta.requiresAuth)){
 		if(localStorage.getItem('bearerToken') == null){

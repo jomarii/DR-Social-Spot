@@ -31,9 +31,6 @@
         	showMenu(){
         		return localStorage.getItem('bearerToken') != null;
         	}
-        },
-        created(){
-        	
         }
     }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <header-component></header-component>
+        <header-component :key="$route.path"></header-component>
         <v-main>
             <v-container fluid>
                 <router-view></router-view>

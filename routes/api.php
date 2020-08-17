@@ -25,6 +25,7 @@ Route::group(['namespace' => 'api', 'prefix' => 'v1'], function(){
 			Route::post('/create', 'PostController@create');
 			Route::get('/{user_id}', 'PostController@getPostsByUser');
 			Route::put('/like/{post_id}', 'PostController@likePost');
+			Route::get('/comments/{post_id}', 'CommentController@getCommentsByPost');
 			Route::post('/comment/{post_id}', 'PostController@comment');
 			Route::post('/comment-reply/{post_id}/{comment_id}', 'PostController@commentReply');
 		});
