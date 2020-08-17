@@ -26,7 +26,16 @@
 					<v-flex md12 v-for="(post, index) in postList" :key="index">
 						<v-card>
 							<v-card-title>{{ post.post }}</v-card-title>
-							<v-card-subtitle>{{ post.user }} • {{ post.created_at }} • Likes: {{ post.likes }}</v-card-subtitle>
+							<v-card-subtitle>{{ post.user }} • {{ post.created_at }} • 
+								<v-tooltip top>
+									<template v-slot:activator="{ on, attrs }">
+										<span v-bind="attrs" v-on="on">Likes: {{ post.likes }}</span>
+									</template>
+									<template v-for="(liker, index) in post.likers">
+										<span>{{ liker.full_name }}</span><br/>
+									</template>
+								</v-tooltip>
+							</v-card-subtitle>
 							<v-card-actions>
 								<v-btn text @click="likePost(post.post_id)">Like</v-btn>
 								<v-btn text @click="showComments(post.comments, post.post_id)">Show comments</v-btn>
