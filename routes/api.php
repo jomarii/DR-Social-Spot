@@ -23,6 +23,7 @@ Route::group(['namespace' => 'api', 'prefix' => 'v1'], function(){
 		//Post routes
 		Route::group(['prefix' => 'post'], function(){
 			Route::post('/create', 'PostController@create');
+			Route::post('/share', 'PostController@sharePost');
 			Route::get('/{user_id}', 'PostController@getPostsByUser');
 			Route::put('/like/{post_id}', 'PostController@likePost');
 			Route::get('/comments/{post_id}', 'CommentController@getCommentsByPost');
