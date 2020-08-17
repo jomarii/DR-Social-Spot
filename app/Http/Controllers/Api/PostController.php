@@ -31,6 +31,25 @@ class PostController extends Controller
     	abort(403, 'Unauthorized access');
     }
 
+    public function sharePost(Request $request){
+        if(Auth::user()->tokenCan('post:create')){
+            $request->validate([
+                'parent_id' => 'required|numeric'
+            ]);
+
+            $post = Post::create([
+                'user_id' => Auth::user()->id,
+                'parent_id' => $request->parent_id
+            ]);
+
+            return response()->json([
+                'message' => 'Shared Successfully!'
+            ]);
+        }
+
+        abort(403, 'Unauthorized access');
+    }
+
     //
     public function likePost($postId){
     	if(Auth::user()->tokenCan('post:like')){

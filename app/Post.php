@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $fillable = ['user_id', 'post'];
+    protected $fillable = ['user_id', 'parent_id', 'post'];
 
     public function user(){
     	return $this->belongsTo(User::class);
@@ -28,5 +28,9 @@ class Post extends Model
 
     public function likers(){
         return $this->likes()->withPivot('post_id')->get();
+    }
+
+    public function sharedFrom(){
+        return $this->belongsTo(Post::class, 'parent_id');
     }
 }
