@@ -11,9 +11,11 @@
 
 <script>
     export default {
-        data: () => ({
-
-        }),
+        data(){
+            return {
+                
+            }
+        },
         created(){
             axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('bearerToken')}`;
         }

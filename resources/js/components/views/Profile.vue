@@ -16,7 +16,7 @@
 				axios.get('/api/v1/profile/'+this.$route.params.id).then(response => {
 					this.user = response.data.data;
 				}).catch(error => {
-					this.notFound = true;
+					this.$router.push('/notfound');
 				});
 			}
 		},

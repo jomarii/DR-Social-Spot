@@ -98,7 +98,9 @@ class PostController extends Controller
 
     public function getPostsByUser($userId){
         if(Auth::user()->tokenCan('post:list')){
-            $posts = Post::where('user_id', $userId)->get();
+            $posts = Post::where('user_id', $userId)
+                        ->orderBy('created_at', 'desc')
+                        ->get();
             return PostResource::collection($posts);
         }
 

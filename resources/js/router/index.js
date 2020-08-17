@@ -7,6 +7,7 @@ import Login from '../components/views/Login'
 import Register from '../components/views/Register'
 import Newsfeed from '../components/views/Newsfeed'
 import Profile from '../components/views/Profile'
+import NotFound from '../components/views/NotFound'
 
 const routes = [
 	{
@@ -22,16 +23,46 @@ const routes = [
 	{
 		component: Newsfeed,
 		name: 'newsfeed',
-		path: '/newsfeed'
+		path: '/newsfeed',
+		meta: {
+			requiresAuth: true
+		}
 	},
 	{
 		component: Profile,
 		name: 'profile',
-		path: '/profile/:id'
+		path: '/profile/:id',
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		component: NotFound,
+		name: 'notfound',
+		path: '/notfound'
 	},
 ];
 
-export default new VueRouter({
+let router = new VueRouter({
 	mode: 'history',
 	routes
-});
+})
+
+router.beforeEach((to, from, next) => {
+	if(to.matched.some(record => record.meta.requiresAuth)){
+		if(localStorage.getItem('bearerToken') == null){
+			next({
+				path: '/login'
+			})
+		}
+		else {
+			next()
+		}
+	}
+	else{
+		next()
+	}
+})
+
+
+export default router

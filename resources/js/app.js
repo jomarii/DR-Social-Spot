@@ -27,6 +27,7 @@ Vue.component('header-component', require('./components/Header.vue').default);
 
 Vue.component('post-list', require('./components/views/reusables/PostList.vue').default);
 Vue.component('comment-dialog', require('./components/views/reusables/CommentDialog.vue').default);
+Vue.component('not-found', require('./components/views/NotFound.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

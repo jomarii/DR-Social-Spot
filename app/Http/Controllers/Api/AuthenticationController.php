@@ -51,7 +51,8 @@ class AuthenticationController extends Controller
 	    }
 
 	    return response()->json([
-	    	'token' => $user->createToken($request->email, User::$userAbilities)->plainTextToken
+	    	'token' => $user->createToken($request->email, User::$userAbilities)->plainTextToken,
+            'user_id' => $user->id
 		]);
     }
 

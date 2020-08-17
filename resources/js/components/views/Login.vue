@@ -35,6 +35,7 @@
 				axios.post('/api/v1/login', this.formData).then(response => {
 					if(response.data.token){
 						localStorage.setItem('bearerToken', response.data.token);
+						localStorage.setItem('userId', response.data.user_id);
 						this.$router.push('/newsfeed');
 					}
 				});
