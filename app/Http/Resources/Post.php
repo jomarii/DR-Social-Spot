@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Comment as CommentResource;
 use App\Http\Resources\Profile as ProfileResource;
 use App\Http\Resources\SharedPost as SharedPostResource;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends JsonResource
 {
@@ -25,6 +26,7 @@ class Post extends JsonResource
             'sharedFrom' => new SharedPostResource($this->sharedFrom),
             'likes' => $this->likesCount(),
             'likers' => ProfileResource::collection($this->likers()),
+            'is_liker' => $this->isLiker(Auth::user()->id),
             'created_at' => $this->created_at->format('M d, Y h:ia'),
             'comments' => CommentResource::collection($this->comments())
         ];
