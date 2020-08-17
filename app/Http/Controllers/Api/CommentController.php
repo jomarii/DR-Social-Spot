@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Comment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Comment as CommentResource;
 
 class CommentController extends Controller

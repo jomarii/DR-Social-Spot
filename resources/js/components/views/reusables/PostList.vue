@@ -13,7 +13,6 @@
 					        </v-card-text>
 							<v-card-actions>
 								<v-btn color="primary" @click="post()">Post</v-btn>
-								<v-btn text>Cancel</v-btn>
 							</v-card-actions>
 						</v-card>
 					</v-flex>
