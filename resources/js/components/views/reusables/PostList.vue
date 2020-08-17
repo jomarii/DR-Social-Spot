@@ -68,22 +68,38 @@
 				let url = this.isNewsfeed ? '/api/v1/newsfeed' : '/api/v1/post/'+this.$route.params.id;
 				axios.get(url).then(response => {
 					this.postList = response.data.data;
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
 				});
 			},
 			post(){
 				axios.post('/api/v1/post/create', {'post' : this.postData }).then(response => {
 					this.postData = '';
 					this.getPosts();
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
 				});
 			},
 			likePost(postId){
 				axios.put('/api/v1/post/like/'+postId).then(response => {
 					this.getPosts();
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
 				});
 			},
 			sharePost(postId){
 				axios.post('/api/v1/post/share', { 'parent_id': postId}).then(response => {
 					this.getPosts();
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
 				});
 			},
 			showComments(comments, postId){
