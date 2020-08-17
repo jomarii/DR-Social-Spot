@@ -27,7 +27,7 @@ class Post extends JsonResource
             'likes' => $this->likesCount(),
             'likers' => ProfileResource::collection($this->likers()),
             'is_liker' => $this->isLiker(Auth::user()->id),
-            'created_at' => $this->created_at->format('M d, Y h:ia'),
+            'created_at' => $this->created_at->format('M d, y h:ia'),
             'comments' => CommentResource::collection($this->comments())
         ];
     }

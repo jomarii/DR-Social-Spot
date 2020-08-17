@@ -42,7 +42,7 @@
 									<template v-else>Like</template>
 								</v-btn>
 								<v-btn text @click="sharePost(post.post_id)">Share</v-btn>
-								<v-btn text @click="showComments(post.comments, post.post_id)">Show comments</v-btn>
+								<v-btn text @click="showComments(post.comments, post.post_id)">Comments</v-btn>
 							</v-card-actions>
 						</v-card>
 					</v-flex>

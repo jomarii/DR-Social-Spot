@@ -11,7 +11,7 @@ import NotFound from '../components/views/NotFound'
 
 const routes = [
 	{
-		path: '/', redirect: '/login'
+		path: '/', redirect: '/newsfeed'
 	},
 	{
 		component: Login,
