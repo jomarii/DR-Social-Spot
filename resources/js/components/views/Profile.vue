@@ -62,10 +62,17 @@
 					this.form.first_name = this.user.first_name;
 					this.form.last_name = this.user.last_name;
 				}).catch(error => {
+					console.log(error.response);
 					if(error.response.status == 401){
 						this.redirectToLogin();
 					}
-					this.$router.push('/notfound');
+					else if(error.response.status == 403){
+						this.$router.push('/403');
+					}
+					else if(error.response.status == 404){
+						this.$router.push('/404');
+					}
+					
 				});
 			},
 			updateProfile(){

@@ -8,6 +8,7 @@ import Register from '../components/views/Register'
 import Newsfeed from '../components/views/Newsfeed'
 import Profile from '../components/views/Profile'
 import NotFound from '../components/views/NotFound'
+import Forbidden from '../components/views/Forbidden'
 
 const routes = [
 	{
@@ -43,6 +44,11 @@ const routes = [
 		component: NotFound,
 		name: 'notfound',
 		path: '/404'
+	},
+	{
+		component: Forbidden,
+		name: 'forbidden',
+		path: '/403'
 	},
 	{
 		path: '*', redirect: '/404'

@@ -24,7 +24,7 @@
         	logout(){
         		axios.put('/api/v1/logout').then(response => {
 					this.redirectToLogin();
-					this.$router.push('/login');
+					this.$router.push('/login').catch(()=>{});
 				});
         	},
         	showMenu(){
