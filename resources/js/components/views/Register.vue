@@ -66,7 +66,7 @@
 			passwordRules(){
 				const rules = [
 					v => v.length != 0 || 'This field is required',
-					v => (!!v && v) === this.formData.reTypePasword || 'Values do not match'
+					v => (!!v && v) === this.formData.reTypePasword || 'Password do not match'
 				];
 				return rules;
 			}
