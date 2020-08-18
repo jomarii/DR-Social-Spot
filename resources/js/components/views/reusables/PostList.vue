@@ -7,7 +7,7 @@
 				</template>
 			</v-snackbar>
 		</div>
-		<v-row>
+		<v-row v-if="showPostForm">
 			<v-col>
 				<v-layout row wrap align-center>
 					<v-flex md12>
@@ -64,7 +64,7 @@
 </template>
 <script>
 	export default{
-		props: ['isNewsfeed'],
+		props: ['isNewsfeed', 'showPostForm'],
 		data: () => ({
 			postList: [],
 			postData: '',

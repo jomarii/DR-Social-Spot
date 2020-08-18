@@ -13,9 +13,7 @@ class ProfileController extends Controller
     public function getProfile($userId){
         if(Auth::user()->tokenCan('profile:view')){
             $profile = User::findOrFail($userId);
-            if(Auth::user()->id == $userId){
-                return new ProfileResource($profile);
-            }
+            return new ProfileResource($profile);
         }
 
         abort(403, 'Unauthorized access');

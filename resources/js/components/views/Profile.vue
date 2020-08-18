@@ -16,7 +16,7 @@
 								<v-card-title>Profile</v-card-title>
 								<v-card-text v-text="user.full_name"></v-card-text>
 								<v-card-actions>
-									<v-btn color="primary" @click="updateDialog = true">Edit</v-btn>
+									<v-btn color="primary" @click="updateDialog = true" v-if="user.is_editable">Edit</v-btn>
 								</v-card-actions>
 							</v-card>
 							<v-dialog v-model="updateDialog" max-width="500px" transition="dialog-transition">
@@ -37,7 +37,7 @@
 				</v-col>
 			</v-row>
 		</v-container>
-		<post-list :isNewsfeed="false" :key="postListKey"></post-list>
+		<post-list :isNewsfeed="false" :key="postListKey" :showPostForm="user.is_editable"></post-list>
 	</div>
 </template>
 <script>
@@ -88,6 +88,11 @@
 						this.redirectToLogin();
 					}
 				});
+			}
+		},
+		watch:{
+			'$route.params.id': function(){
+				this.getProfile();
 			}
 		},
 		created(){
