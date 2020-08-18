@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@mdi/font": "^5.5.55",
         "vue-router": "^3.4.3",
         "vuetify": "^2.3.6",
         "vuex": "^3.5.1"

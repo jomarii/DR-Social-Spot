@@ -45,17 +45,30 @@
 				v => v.length <= 191 || 'Max characters 191',
 				v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
 			],
-			passwordRules: [
-				v => v.length != 0 || 'This field is required',
-			],
 		}),
 		methods: {
 			register(){
-				if(this.$refs.regForm.validate()){
+				if(this.validateField()){
 					axios.post('/api/v1/register', this.formData).then(response =>{
 						this.$router.push('/login');
 					});
 				}
+			},
+			validateField(){
+				return this.$refs.regForm.validate();
+			}
+		},
+		watch:{
+			'formData.password' : 'validateField',
+			'formData.reTypePasword' : 'validateField',
+		},
+		computed: {
+			passwordRules(){
+				const rules = [
+					v => v.length != 0 || 'This field is required',
+					v => (!!v && v) === this.formData.reTypePasword || 'Values do not match'
+				];
+				return rules;
 			}
 		}
 	}

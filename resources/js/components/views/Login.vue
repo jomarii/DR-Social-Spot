@@ -1,5 +1,12 @@
 <template>
 	<v-row>
+		<div class="text-center">
+			<v-snackbar :color="snackbarColor" v-model="snackbar" :timeout="timeout" top>{{ snackbarMessage }}
+				<template v-slot:action="{ attrs }">
+					<v-btn color="white" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+				</template>
+			</v-snackbar>
+		</div>
 		<v-col cols="12">
 			<v-row justify="center">
 				<v-card width="500px">
@@ -7,8 +14,8 @@
 
 			        <v-card-text>
 			        	<v-form ref="loginForm">
-			        		<v-text-field v-model="formData.email" placeholder="Email" id="email" type="text" :rules="inputRules"></v-text-field>
-			        		<v-text-field v-model="formData.password" placeholder="Password" id="password" type="password" :rules="inputRules"></v-text-field>
+			        		<v-text-field v-model="formData.email" placeholder="Email" id="email" type="text" :rules="emailRules"></v-text-field>
+			        		<v-text-field v-model="formData.password" placeholder="Password" id="password" type="password" :rules="passwordRules"></v-text-field>
 			        	</v-form>
 			        </v-card-text>
 
@@ -29,9 +36,17 @@
 				email: '',
 				password: ''
 			},
-			inputRules: [
+			emailRules: [
+				v => v.length != 0 || 'This field is required',
+				v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+			],
+			passwordRules: [
 				v => v.length != 0 || 'This field is required'
-			]
+			],
+			snackbarMessage: '',
+			snackbar: false,
+			snackbarColor: 'success',
+			timeout: 2000
 		}),
 		methods: {
 			login(){
@@ -42,6 +57,10 @@
 							localStorage.setItem('userId', response.data.user_id);
 							this.$router.push('/newsfeed');
 						}
+					}).catch(error => {
+						this.snackbarMessage = error.response.data.errors.message[0];
+						this.snackbar = true;
+						this.snackbarColor = 'error';
 					});
 				}
 				

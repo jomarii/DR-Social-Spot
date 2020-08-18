@@ -119,7 +119,7 @@ class PostController extends Controller
         if(Auth::user()->tokenCan('post:list')){
             $posts = Post::where('user_id', $userId)
                         ->orderBy('created_at', 'desc')
-                        ->get();
+                        ->paginate(10);
             return PostResource::collection($posts);
         }
 
@@ -137,7 +137,7 @@ class PostController extends Controller
 
             $posts = Post::whereIn('user_id', $friendListIds)
                         ->orderBy('created_at', 'desc')
-                        ->get();
+                        ->paginate(10);
             return PostResource::collection($posts);
         }
 

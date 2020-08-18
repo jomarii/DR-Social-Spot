@@ -11,8 +11,12 @@ use App\Http\Resources\Profile as ProfileResource;
 class ProfileController extends Controller
 {
     public function getProfile($userId){
-        $profile = User::findOrFail($userId);
-        return new ProfileResource($profile);
+        if(Auth::user()->tokenCan('profile:view')){
+            $profile = User::findOrFail($userId);
+            return new ProfileResource($profile);
+        }
+
+        abort(403, 'Unauthorized access');
     }
 
     public function update(Request $request){

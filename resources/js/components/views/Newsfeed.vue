@@ -1,5 +1,5 @@
 <template>
-	<post-list :isNewsfeed="true"></post-list>
+	<post-list :isNewsfeed="true" :showPostForm="true"></post-list>
 </template>
 <script>
 	export default{
