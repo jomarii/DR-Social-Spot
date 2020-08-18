@@ -1,6 +1,13 @@
 <template>
 	<div>
 		<v-container fluid grid-list-md>
+			<div class="text-center">
+				<v-snackbar :color="snackbarColor" v-model="snackbar" :timeout="timeout" top>{{ snackbarMessage }}
+					<template v-slot:action="{ attrs }">
+						<v-btn color="white" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+					</template>
+				</v-snackbar>
+			</div>
 			<v-row>
 				<v-col>
 					<v-layout>
@@ -42,7 +49,11 @@
 				first_name: '',
 				last_name: ''
 			},
-			postListKey: 0
+			postListKey: 0,
+			snackbarMessage: '',
+			snackbar: false,
+			snackbarColor: 'success',
+			timeout: 2000
 		}),
 		methods: {
 			getProfile(){
@@ -62,6 +73,9 @@
 					this.user.full_name = response.data.data.full_name;
 					this.postListKey = this.postListKey+1;
 					this.updateDialog = false;
+					this.snackbarMessage = 'Profile updated!';
+					this.snackbar = true;
+					this.snackbarColor = 'success';
 				}).catch(error => {
 					if(error.response.status == 401){
 						this.redirectToLogin();

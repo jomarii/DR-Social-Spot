@@ -1,5 +1,12 @@
 <template>
 	<v-container fluid grid-list-md>
+		<div class="text-center">
+			<v-snackbar :color="snackbarColor" v-model="snackbar" :timeout="timeout" top>{{ snackbarMessage }}
+				<template v-slot:action="{ attrs }">
+					<v-btn color="white" text v-bind="attrs" @click="snackbar = false">Close</v-btn>
+				</template>
+			</v-snackbar>
+		</div>
 		<v-row>
 			<v-col>
 				<v-layout row wrap align-center>
@@ -65,7 +72,11 @@
 				comments: [],
 				postId: ''
 			},
-			commentDialog: false
+			commentDialog: false,
+			snackbarMessage: '',
+			snackbar: false,
+			snackbarColor: 'success',
+			timeout: 2000
 		}),
 		methods: {
 			getPosts(){
@@ -82,6 +93,9 @@
 				axios.post('/api/v1/post/create', {'post' : this.postData }).then(response => {
 					this.postData = '';
 					this.getPosts();
+					this.snackbarMessage = response.data.message;
+					this.snackbar = true;
+					this.snackbarColor = 'success';
 				}).catch(error => {
 					if(error.response.status == 401){
 						this.redirectToLogin();
@@ -91,6 +105,9 @@
 			likePost(postId){
 				axios.put('/api/v1/post/like/'+postId).then(response => {
 					this.getPosts();
+					this.snackbarMessage = response.data.message;
+					this.snackbar = true;
+					this.snackbarColor = 'success';
 				}).catch(error => {
 					if(error.response.status == 401){
 						this.redirectToLogin();
@@ -100,6 +117,9 @@
 			sharePost(postId){
 				axios.post('/api/v1/post/share', { 'parent_id': postId}).then(response => {
 					this.getPosts();
+					this.snackbarMessage = response.data.message;
+					this.snackbar = true;
+					this.snackbarColor = 'success';
 				}).catch(error => {
 					if(error.response.status == 401){
 						this.redirectToLogin();

@@ -2,7 +2,6 @@
 	<v-dialog v-model="$parent.commentDialog" scrollable max-width="500px" transition="dialog-transition" class="mx-auto">
 		<v-card max-width="500" class="mx-auto">
    			<v-toolbar color="blue" dense>
-				<v-app-bar-nav-icon></v-app-bar-nav-icon>
 				<v-toolbar-title>Comments</v-toolbar-title>
 				<v-spacer></v-spacer>
     		</v-toolbar>
