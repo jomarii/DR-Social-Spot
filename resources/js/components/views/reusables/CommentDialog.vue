@@ -68,7 +68,7 @@
 			comment(postId){
 				axios.post('/api/v1/post/comment/'+postId, this.commentForm).then(response => {
 					this.commentForm.comment = '';
-					this.$parent.getPosts();
+					this.$parent.getPosts(this.$parent.page);
 					this.getComments();
 					this.btnCommentDisabled = true;
 				}).catch(error => {
@@ -80,7 +80,7 @@
 			reply(postId, commentId){
 				axios.post('/api/v1/post/comment-reply/'+postId+'/'+commentId, {'comment': this.replyForm[commentId]}).then(response => {
 					this.replyForm[commentId] = '';
-					this.$parent.getPosts();
+					this.$parent.getPosts(this.$parent.page);
 					this.getComments();
 				}).catch(error => {
 					if(error.response.status == 401){

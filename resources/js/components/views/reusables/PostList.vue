@@ -57,6 +57,7 @@
 					<v-flex v-else>
 						<div class="text-center">No Posts Yet</div>
 					</v-flex>
+					<v-pagination :length="paginationLength" v-model="page" @input="getPosts"></v-pagination>
 				</v-layout>
 			</v-col>
 		</v-row>
@@ -70,6 +71,8 @@
 		props: ['isNewsfeed', 'showPostForm'],
 		data: () => ({
 			postList: [],
+			paginationLength: 1,
+			page: 1,
 			postData: '',
 			commentsData: {
 				comments: [],
@@ -83,10 +86,12 @@
 			btnPostDisabled: true
 		}),
 		methods: {
-			getPosts(){
+			getPosts(page){
 				let url = this.isNewsfeed ? '/api/v1/newsfeed' : '/api/v1/post/'+this.$route.params.id;
-				axios.get(url).then(response => {
+				axios.get(url+'?page='+page).then(response => {
 					this.postList = response.data.data;
+					this.paginationLength = response.data.meta.last_page >= 10 ? 10 : response.data.meta.last_page;
+					this.page = response.data.meta.current_page;
 				}).catch(error => {
 					if(error.response.status == 401){
 						this.redirectToLogin();
@@ -96,7 +101,8 @@
 			post(){
 				axios.post('/api/v1/post/create', {'post' : this.postData }).then(response => {
 					this.postData = '';
-					this.getPosts();
+					this.page = 1;
+					this.getPosts(this.page);
 					this.snackbarMessage = response.data.message;
 					this.snackbar = true;
 					this.snackbarColor = 'success';
@@ -108,7 +114,7 @@
 			},
 			likePost(postId){
 				axios.put('/api/v1/post/like/'+postId).then(response => {
-					this.getPosts();
+					this.getPosts(this.page);
 					this.snackbarMessage = response.data.message;
 					this.snackbar = true;
 					this.snackbarColor = 'success';
@@ -120,7 +126,8 @@
 			},
 			sharePost(postId){
 				axios.post('/api/v1/post/share', { 'parent_id': postId}).then(response => {
-					this.getPosts();
+					this.page = 1;
+					this.getPosts(this.page);
 					this.snackbarMessage = response.data.message;
 					this.snackbar = true;
 					this.snackbarColor = 'success';
@@ -134,7 +141,7 @@
 				this.commentsData.comments = comments;
 				this.commentsData.postId = postId;
 				this.commentDialog = true;
-			}
+			},
 		},
 		mounted(){
 			this.getPosts();
