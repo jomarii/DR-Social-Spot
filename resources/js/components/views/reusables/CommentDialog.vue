@@ -43,9 +43,9 @@
 		        </template>
 		        <v-list-item>
 		        	<v-list-item-content>
-		        		<v-text-field v-model="commentForm.comment" placeholder="Type your comment here">
+		        		<v-text-field v-model="commentForm.comment" placeholder="Type your comment here" @input="btnCommentDisabled = (commentForm.comment == '')">
 		        			<template slot="append">
-		        				<v-btn color="primary" small @click="comment(commentsData.postId)">Comment</v-btn>
+		        				<v-btn color="primary" small @click="comment(commentsData.postId)" :disabled="btnCommentDisabled">Comment</v-btn>
 		        			</template>
 		        		</v-text-field>
 		        	</v-list-item-content>
@@ -61,7 +61,8 @@
 			commentForm: {
 				comment: ''
 			},
-			replyForm: []
+			replyForm: [],
+			btnCommentDisabled: true
 		}),
 		methods: {
 			comment(postId){
@@ -69,6 +70,7 @@
 					this.commentForm.comment = '';
 					this.$parent.getPosts();
 					this.getComments();
+					this.btnCommentDisabled = true;
 				}).catch(error => {
 					if(error.response.status == 401){
 						this.redirectToLogin();
