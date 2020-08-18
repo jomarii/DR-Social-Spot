@@ -11,7 +11,7 @@
 			        		<v-text-field v-model="formData.last_name" placeholder="Last Name" type="text" :rules="inputRules"></v-text-field>
 			        		<v-text-field v-model="formData.email" placeholder="Email" id="email" type="text" :rules="emailRules"></v-text-field>
 			        		<v-text-field v-model="formData.password" placeholder="Password" type="password" :rules="passwordRules"></v-text-field>
-			        		<v-text-field v-model="formData.reTypePasword" placeholder="Re-Type Password" type="password" :rules="reTypePaswordRules"></v-text-field>
+			        		<v-text-field v-model="formData.reTypePasword" placeholder="Re-Type Password" type="password"></v-text-field>
 			        	</v-form>
 			        </v-card-text>
 
@@ -49,27 +49,13 @@
 				v => v.length != 0 || 'This field is required',
 			],
 		}),
-		watch:{
-			'formData.reTypePasword': function(){
-				this.validate();
-			}
-		},
-		computed: {
-			reTypePaswordRules(){
-				v => (!!v && v) == this.formData.password || 'Values do not match',
-				v => v.length != 0 || 'This field is required'
-			}
-		},
 		methods: {
 			register(){
-				if(this.validate()){
+				if(this.$refs.regForm.validate()){
 					axios.post('/api/v1/register', this.formData).then(response =>{
 						this.$router.push('/login');
 					});
 				}
-			},
-			validate(){
-				this.$refs.regForm.validate();
 			}
 		}
 	}
