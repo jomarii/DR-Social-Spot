@@ -51,6 +51,9 @@
 					this.form.first_name = this.user.first_name;
 					this.form.last_name = this.user.last_name;
 				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
 					this.$router.push('/notfound');
 				});
 			},
@@ -59,6 +62,10 @@
 					this.user.full_name = response.data.data.full_name;
 					this.postListKey = this.postListKey+1;
 					this.updateDialog = false;
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
 				});
 			}
 		},

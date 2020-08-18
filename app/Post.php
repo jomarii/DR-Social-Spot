@@ -30,6 +30,12 @@ class Post extends Model
         return $this->likes()->withPivot('post_id')->get();
     }
 
+    public function isLiker($userId){
+        return $this->likes()
+                    ->where('user_id', $userId)
+                    ->exists();
+    }
+
     public function sharedFrom(){
         return $this->belongsTo(Post::class, 'parent_id');
     }

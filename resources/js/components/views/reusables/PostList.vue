@@ -37,9 +37,13 @@
 								</v-tooltip>
 							</v-card-subtitle>
 							<v-card-actions>
-								<v-btn text @click="likePost(post.post_id)">Like</v-btn>
-								<v-btn text @click="sharePost(post.post_id)">Share</v-btn>
-								<v-btn text @click="showComments(post.comments, post.post_id)">Show comments</v-btn>
+								<v-btn text @click="likePost(post.post_id)">
+									<template v-if="post.is_liker">Unlike</template>
+									<template v-else>Like</template>
+								</v-btn>
+								<v-btn text @click="sharePost(post.post_id)" v-if="post.sharedFrom == null">Share</v-btn>
+								<v-btn text @click="sharePost(post.sharedFrom.post_id)" v-else>Share</v-btn>
+								<v-btn text @click="showComments(post.comments, post.post_id)">Comments</v-btn>
 							</v-card-actions>
 						</v-card>
 					</v-flex>
@@ -68,22 +72,38 @@
 				let url = this.isNewsfeed ? '/api/v1/newsfeed' : '/api/v1/post/'+this.$route.params.id;
 				axios.get(url).then(response => {
 					this.postList = response.data.data;
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
 				});
 			},
 			post(){
 				axios.post('/api/v1/post/create', {'post' : this.postData }).then(response => {
 					this.postData = '';
 					this.getPosts();
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
 				});
 			},
 			likePost(postId){
 				axios.put('/api/v1/post/like/'+postId).then(response => {
 					this.getPosts();
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
 				});
 			},
 			sharePost(postId){
 				axios.post('/api/v1/post/share', { 'parent_id': postId}).then(response => {
 					this.getPosts();
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
 				});
 			},
 			showComments(comments, postId){

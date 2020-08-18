@@ -23,8 +23,7 @@
         methods: {
         	logout(){
         		axios.put('/api/v1/logout').then(response => {
-					localStorage.removeItem('bearerToken');
-					localStorage.removeItem('userId');
+					this.redirectToLogin();
 					this.$router.push('/login');
 				});
         	},

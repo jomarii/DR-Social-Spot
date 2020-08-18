@@ -10,6 +10,7 @@ window.Vue = require('vue');
 
 import Vuetify from '../plugins/vuetify'
 import router from './router'
+import Mixins from '../plugins/mixins'
 
 /**
  * The following block of code may be used to automatically register your
@@ -37,6 +38,7 @@ Vue.component('not-found', require('./components/views/NotFound.vue').default);
 
 const app = new Vue({
 	vuetify: Vuetify,
+	mixins: Mixins,
 	router,
     el: '#app',
 });

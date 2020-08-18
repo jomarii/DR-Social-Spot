@@ -20,7 +20,7 @@ class CommentReply extends JsonResource
             'user_id' => $this->user_id,
             'user' => $this->user->getFullNameAttribute(),
             'comment' => $this->comment,
-            'created_at' => $this->created_at->format('M d, Y h:ia'),
+            'created_at' => $this->created_at->format('M d, y h:ia'),
         ];
     }
 }

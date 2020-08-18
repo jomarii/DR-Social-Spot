@@ -70,6 +70,10 @@
 					this.commentForm.comment = '';
 					this.$parent.getPosts();
 					this.getComments();
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
 				});
 			},
 			reply(postId, commentId){
@@ -77,11 +81,19 @@
 					this.replyForm[commentId] = '';
 					this.$parent.getPosts();
 					this.getComments();
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
 				});
 			},
 			getComments(){
 				axios.get('/api/v1/post/comments/'+this.commentsData.postId).then(response => {
 					this.commentsData.comments = response.data.data;
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
 				});
 			}
 		}
