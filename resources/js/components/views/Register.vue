@@ -6,12 +6,12 @@
 			        <v-card-title class="headline">Register</v-card-title>
 
 			        <v-card-text>
-			        	<v-form>
-			        		<v-text-field v-model="formData.first_name" placeholder="First Name" type="text"></v-text-field>
-			        		<v-text-field v-model="formData.last_name" placeholder="Last Name" type="text"></v-text-field>
-			        		<v-text-field v-model="formData.email" placeholder="Email" id="email" type="text"></v-text-field>
-			        		<v-text-field v-model="formData.password" placeholder="Password" type="password"></v-text-field>
-			        		<v-text-field v-model="formData.reTypePasword" placeholder="Re-Type Password" type="password"></v-text-field>
+			        	<v-form ref="regForm">
+			        		<v-text-field v-model="formData.first_name" placeholder="First Name" type="text" :rules="inputRules"></v-text-field>
+			        		<v-text-field v-model="formData.last_name" placeholder="Last Name" type="text" :rules="inputRules"></v-text-field>
+			        		<v-text-field v-model="formData.email" placeholder="Email" id="email" type="text" :rules="emailRules"></v-text-field>
+			        		<v-text-field v-model="formData.password" placeholder="Password" type="password" :rules="passwordRules"></v-text-field>
+			        		<v-text-field v-model="formData.reTypePasword" placeholder="Re-Type Password" type="password" :rules="reTypePaswordRules"></v-text-field>
 			        	</v-form>
 			        </v-card-text>
 
@@ -35,13 +35,41 @@
 				email: '',
 				password: '',
 				reTypePasword: ''
-			}
+			},
+			inputRules: [
+				v => v.length != 0 || 'This field is required',
+				v => v.length <= 45 || 'Max characters 45',
+			],
+			emailRules: [
+				v => v.length != 0 || 'This field is required',
+				v => v.length <= 191 || 'Max characters 191',
+				v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+			],
+			passwordRules: [
+				v => v.length != 0 || 'This field is required',
+			],
 		}),
+		watch:{
+			'formData.reTypePasword': function(){
+				this.validate();
+			}
+		},
+		computed: {
+			reTypePaswordRules(){
+				v => (!!v && v) == this.formData.password || 'Values do not match',
+				v => v.length != 0 || 'This field is required'
+			}
+		},
 		methods: {
 			register(){
-				axios.post('/api/v1/register', this.formData).then(response =>{
-					this.$router.push('/login');
-				});
+				if(this.validate()){
+					axios.post('/api/v1/register', this.formData).then(response =>{
+						this.$router.push('/login');
+					});
+				}
+			},
+			validate(){
+				this.$refs.regForm.validate();
 			}
 		}
 	}

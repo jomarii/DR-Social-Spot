@@ -6,9 +6,9 @@
 			        <v-card-title class="headline">Login</v-card-title>
 
 			        <v-card-text>
-			        	<v-form>
-			        		<v-text-field v-model="formData.email" placeholder="Email" id="email" type="text"></v-text-field>
-			        		<v-text-field v-model="formData.password" placeholder="Password" id="password" type="password"></v-text-field>
+			        	<v-form ref="loginForm">
+			        		<v-text-field v-model="formData.email" placeholder="Email" id="email" type="text" :rules="inputRules"></v-text-field>
+			        		<v-text-field v-model="formData.password" placeholder="Password" id="password" type="password" :rules="inputRules"></v-text-field>
 			        	</v-form>
 			        </v-card-text>
 
@@ -28,17 +28,23 @@
 			formData: {
 				email: '',
 				password: ''
-			}
+			},
+			inputRules: [
+				v => v.length != 0 || 'This field is required'
+			]
 		}),
 		methods: {
 			login(){
-				axios.post('/api/v1/login', this.formData).then(response => {
-					if(response.data.token){
-						localStorage.setItem('bearerToken', response.data.token);
-						localStorage.setItem('userId', response.data.user_id);
-						this.$router.push('/newsfeed');
-					}
-				});
+				if(this.$refs.loginForm.validate()){
+					axios.post('/api/v1/login', this.formData).then(response => {
+						if(response.data.token){
+							localStorage.setItem('bearerToken', response.data.token);
+							localStorage.setItem('userId', response.data.user_id);
+							this.$router.push('/newsfeed');
+						}
+					});
+				}
+				
 			}
 		}
 	}
