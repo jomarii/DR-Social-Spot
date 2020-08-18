@@ -15,8 +15,9 @@ class SharedPost extends JsonResource
     public function toArray($request)
     {
         return [
-            'user_id' => $this->id,
+            'user_id' => $this->user_id,
             'user' => $this->user->getFullNameAttribute(),
+            'post_id' => $this->id,
             'sharedPost' => $this->post
         ];
     }

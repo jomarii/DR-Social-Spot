@@ -41,7 +41,8 @@
 									<template v-if="post.is_liker">Unlike</template>
 									<template v-else>Like</template>
 								</v-btn>
-								<v-btn text @click="sharePost(post.post_id)">Share</v-btn>
+								<v-btn text @click="sharePost(post.post_id)" v-if="post.sharedFrom == null">Share</v-btn>
+								<v-btn text @click="sharePost(post.sharedFrom.post_id)" v-else>Share</v-btn>
 								<v-btn text @click="showComments(post.comments, post.post_id)">Comments</v-btn>
 							</v-card-actions>
 						</v-card>
