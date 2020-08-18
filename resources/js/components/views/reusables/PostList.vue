@@ -15,11 +15,11 @@
 							<v-card-title>What's on your mind?</v-card-title>
 							<v-card-text>
 					        	<v-form>
-					        		<v-text-field v-model="postData" placeholder="Type your post here" type="text"></v-text-field>
+					        		<v-text-field v-model="postData" @input="btnPostDisabled = (postData == '')" placeholder="Type your post here" type="text"></v-text-field>
 					        	</v-form>
 					        </v-card-text>
 							<v-card-actions>
-								<v-btn color="primary" @click="post()">Post</v-btn>
+								<v-btn color="primary" @click="post()" :disabled="btnPostDisabled">Post</v-btn>
 							</v-card-actions>
 						</v-card>
 					</v-flex>
@@ -29,7 +29,7 @@
 		<v-row>
 			<v-col>
 				<v-layout row wrap align-center>
-					<v-flex md12 v-for="(post, index) in postList" :key="index">
+					<v-flex md12 v-for="(post, index) in postList" :key="index" v-if="postList.length != 0">
 						<v-card>
 							<v-card-title v-if="post.sharedFrom == null">{{ post.post }}</v-card-title>
 							<v-card-title v-else>{{ post.sharedFrom.sharedPost }}</v-card-title>
@@ -54,6 +54,9 @@
 							</v-card-actions>
 						</v-card>
 					</v-flex>
+					<v-flex v-else>
+						<div class="text-center">No Posts Yet</div>
+					</v-flex>
 				</v-layout>
 			</v-col>
 		</v-row>
@@ -76,7 +79,8 @@
 			snackbarMessage: '',
 			snackbar: false,
 			snackbarColor: 'success',
-			timeout: 2000
+			timeout: 2000,
+			btnPostDisabled: true
 		}),
 		methods: {
 			getPosts(){

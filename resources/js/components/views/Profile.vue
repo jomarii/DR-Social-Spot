@@ -23,8 +23,10 @@
 								<v-card>
 									<v-card-title primary-title>Update Profile</v-card-title>
 									<v-card-text>
-										<v-text-field v-model="form.first_name" placeholder="First Name"></v-text-field>
-										<v-text-field v-model="form.last_name" placeholder="Last Name"></v-text-field>
+										<v-form ref="profileForm">
+											<v-text-field v-model="form.first_name" placeholder="First Name" :rules="inputRules"></v-text-field>
+											<v-text-field v-model="form.last_name" placeholder="Last Name" :rules="inputRules"></v-text-field>
+										</v-form>
 									</v-card-text>
 									<v-card-actions>
 										<v-btn color="primary" @click="updateProfile()">Update</v-btn>
@@ -53,7 +55,10 @@
 			snackbarMessage: '',
 			snackbar: false,
 			snackbarColor: 'success',
-			timeout: 2000
+			timeout: 2000,
+			inputRules: [
+				v => v.length != 0 || 'This field is required'
+			]
 		}),
 		methods: {
 			getProfile(){
@@ -76,18 +81,20 @@
 				});
 			},
 			updateProfile(){
-				axios.patch('/api/v1/profile/update', this.form).then(response => {
-					this.user.full_name = response.data.data.full_name;
-					this.postListKey = this.postListKey+1;
-					this.updateDialog = false;
-					this.snackbarMessage = 'Profile updated!';
-					this.snackbar = true;
-					this.snackbarColor = 'success';
-				}).catch(error => {
-					if(error.response.status == 401){
-						this.redirectToLogin();
-					}
-				});
+				if(this.$refs.profileForm.validate()){
+					axios.patch('/api/v1/profile/update', this.form).then(response => {
+						this.user.full_name = response.data.data.full_name;
+						this.postListKey = this.postListKey+1;
+						this.updateDialog = false;
+						this.snackbarMessage = 'Profile updated!';
+						this.snackbar = true;
+						this.snackbarColor = 'success';
+					}).catch(error => {
+						if(error.response.status == 401){
+							this.redirectToLogin();
+						}
+					});
+				}
 			}
 		},
 		watch:{
