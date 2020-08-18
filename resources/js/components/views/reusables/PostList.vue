@@ -61,7 +61,7 @@
 							<div class="text-center">No Posts Yet</div>
 						</v-flex>
 					</template>
-					<v-pagination :length="paginationLength" v-model="page" @input="getPosts" v-show="!(postList.length <= 10)"></v-pagination>
+					<v-pagination :length="paginationLength" v-model="page" @input="getPosts" v-show="!(postTotal <= 10)"></v-pagination>
 				</v-layout>
 			</v-col>
 		</v-row>
@@ -76,6 +76,7 @@
 		data: () => ({
 			postList: [],
 			paginationLength: 1,
+			postTotal: 0,
 			page: 1,
 			postData: '',
 			commentsData: {
@@ -93,6 +94,7 @@
 			getPosts(page){
 				let url = this.isNewsfeed ? '/api/v1/newsfeed' : '/api/v1/post/'+this.$route.params.id;
 				axios.get(url+'?page='+page).then(response => {
+					this.postTotal = response.data.meta.total;
 					this.postList = response.data.data;
 					this.paginationLength = response.data.meta.last_page >= 10 ? 10 : response.data.meta.last_page;
 					this.page = response.data.meta.current_page;
