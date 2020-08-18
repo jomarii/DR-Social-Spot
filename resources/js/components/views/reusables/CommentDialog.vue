@@ -32,13 +32,11 @@
 		          	</template>
 		          	<v-list-item class="ml-16">
 			        	<v-list-item-content>
-			        		<v-form ref="replyForm">
-			        			<v-text-field v-model="replyForm[comment.comment_id]" placeholder="Type your reply here" :rules="commentRules">
-				        			<template slot="append">
-				        				<v-btn color="primary" small @click="reply(comment.post_id, comment.comment_id)">Reply</v-btn>
-				        			</template>
-				        		</v-text-field>
-			        		</v-form>
+			        		<v-text-field v-model="replyForm[comment.comment_id]" placeholder="Type your reply here">
+			        			<template slot="append">
+			        				<v-btn color="primary" small @click="reply(comment.post_id, comment.comment_id)">Reply</v-btn>
+			        			</template>
+			        		</v-text-field>
 			        	</v-list-item-content>
 		        	</v-list-item>
 
@@ -46,13 +44,11 @@
 		        </template>
 		        <v-list-item>
 		        	<v-list-item-content>
-		        		<v-form ref="commentForm">
-		        			<v-text-field v-model="commentForm.comment" placeholder="Type your comment here" :rules="commentRules">
-			        			<template slot="append">
-			        				<v-btn color="primary" small @click="comment(commentsData.postId)">Comment</v-btn>
-			        			</template>
-			        		</v-text-field>
-		        		</v-form>
+		        		<v-text-field v-model="commentForm.comment" placeholder="Type your comment here">
+		        			<template slot="append">
+		        				<v-btn color="primary" small @click="comment(commentsData.postId)">Comment</v-btn>
+		        			</template>
+		        		</v-text-field>
 		        	</v-list-item-content>
 		        </v-list-item>
 		    </v-list>
@@ -66,37 +62,30 @@
 			commentForm: {
 				comment: ''
 			},
-			replyForm: [],
-			commentRules: [
-				v => v.length != 0 || 'This field is required'
-			]
+			replyForm: []
 		}),
 		methods: {
 			comment(postId){
-				if(this.$refs.commentForm.validate()){
-					axios.post('/api/v1/post/comment/'+postId, this.commentForm).then(response => {
-						this.commentForm.comment = '';
-						this.$parent.getPosts();
-						this.getComments();
-					}).catch(error => {
-						if(error.response.status == 401){
-							this.redirectToLogin();
-						}
-					});
-				}
+				axios.post('/api/v1/post/comment/'+postId, this.commentForm).then(response => {
+					this.commentForm.comment = '';
+					this.$parent.getPosts();
+					this.getComments();
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
+				});
 			},
 			reply(postId, commentId){
-				if(this.$refs.replyForm.validate()){
-					axios.post('/api/v1/post/comment-reply/'+postId+'/'+commentId, {'comment': this.replyForm[commentId]}).then(response => {
-						this.replyForm[commentId] = '';
-						this.$parent.getPosts();
-						this.getComments();
-					}).catch(error => {
-						if(error.response.status == 401){
-							this.redirectToLogin();
-						}
-					});
-				}
+				axios.post('/api/v1/post/comment-reply/'+postId+'/'+commentId, {'comment': this.replyForm[commentId]}).then(response => {
+					this.replyForm[commentId] = '';
+					this.$parent.getPosts();
+					this.getComments();
+				}).catch(error => {
+					if(error.response.status == 401){
+						this.redirectToLogin();
+					}
+				});
 			},
 			getComments(){
 				axios.get('/api/v1/post/comments/'+this.commentsData.postId).then(response => {
